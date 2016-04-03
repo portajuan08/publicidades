@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head lang="en">
+
+    <title>Spring Framework Guru</title>
+
+    <!--/*/ <th:block th:include="fragments/headerinc :: head"></th:block> /*/-->
+</head>
+<body>
+<div class="container">
+    <!--/*/ <th:block th:include="fragments/header :: header"></th:block> /*/-->
+    <h2 th:text="#{fieldContratos}"></h2>
+			
+    <div th:if="${not #lists.isEmpty(contratos)}">
+        <table class="table table-striped">
+            <tr>
+                <th th:text="#{fieldId}"/>
+                <th th:text="#{fieldCliente}"/>
+            	<th th:text="#{fieldVendedor}"/>
+                <th th:text="#{fieldPrecio}"/>
+                <th th:text="#{fieldInicio}"/>
+                <th th:text="#{fieldFin}"/>
+                <th th:text="#{fieldVer}"/>
+                <th th:text="#{fieldEditar}"/>
+                <th th:text="#{fieldEliminar}"/>
+            </tr>
+            <tr th:each="contrato : ${contratos}">
+                <td th:text="${contrato.id}"><a href="/contrato/${contrato.id}">Id</a></td>
+                <td th:text="${contrato.cliente.nombre}">cliente</td>
+                <td th:text="${contrato.vendedor}">Vendedor</td>
+                <td th:text="${contrato.precio}">Precio</td>
+                <td th:text="${contrato.fechaInicio}">Inicio</td>
+                <td th:text="${contrato.fechaFin}">Fin</td>
+                <td><a th:href="${ '/contrato/' + contrato.id}" th:text="#{fieldVer}" class="glyphicon glyphicon-eye-open icon-white  "> </a></td>
+                <td><a th:href="${'/contrato/edit/' + contrato.id}" th:text="#{fieldEditar}" class="glyphicon glyphicon-edit icon-white  "></a></td>
+                <td><a th:href="${'/contrato/delete/' + contrato.id}" th:text="#{fieldEliminar}" class="glyphicon glyphicon-trash icon-white  "></a></td>
+            </tr>
+        </table>
+
+    </div>    
+	<form class="form-horizontal" th:object="${contrato}" th:action="@{/contrato/new}">
+	
+	<table>
+	    <tr>
+		    <td>
+		    	<button type="submit" class="btn btn-success" th:text="#{buttonAgregarContrato}"></button>
+		    </td>
+	    </tr>
+	</table>  
+	</form>
+</div>
+
+</body>
+</html>

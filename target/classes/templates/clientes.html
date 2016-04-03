@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head lang="en">
+
+    <title>Spring Framework Guru</title>
+
+    <!--/*/ <th:block th:include="fragments/headerinc :: head"></th:block> /*/-->
+</head>
+<body>
+<div class="container">
+    <!--/*/ <th:block th:include="fragments/header :: header"></th:block> /*/-->
+    <h2 th:text="#{fieldClientes}"></h2>
+			
+    <div th:if="${not #lists.isEmpty(clientes)}">
+        <table class="table table-striped">
+            <tr>
+                <th th:text="#{fieldId}"/>
+            	<th th:text="#{fieldNombre}"/>
+                <th th:text="#{fieldDireccion}"/>
+                <th th:text="#{fieldTelefono}"/>
+                <th th:text="#{fieldVer}"/>
+                <th th:text="#{fieldEditar}"/>
+                <th th:text="#{fieldEliminar}"/>
+            </tr>
+            <tr th:each="cliente : ${clientes}">
+                <td th:text="${cliente.id}"><a href="/chofer/${chofer.id}">Id</a></td>
+                <td th:text="${cliente.nombre}">Nombre</td>
+                <td th:text="${cliente.direccion}">Direccion</td>
+                <td th:text="${cliente.telefono}">Telefono</td>
+                <td><a th:href="${ '/cliente/' + cliente.id}" th:text="#{fieldVer}" class="glyphicon glyphicon-eye-open icon-white  "> </a></td>
+                <td><a th:href="${'/cliente/edit/' + cliente.id}" th:text="#{fieldEditar}" class="glyphicon glyphicon-edit icon-white  "></a></td>
+                <td><a th:href="${'/cliente/delete/' + cliente.id}" th:text="#{fieldEliminar}" class="glyphicon glyphicon-trash icon-white  "></a></td>
+            </tr>
+        </table>
+
+    </div>    
+	<form class="form-horizontal" th:object="${cliente}" th:action="@{/cliente/new}">
+	
+	<table>
+	    <tr>
+		    <td>
+		    	<button type="submit" class="btn btn-success" th:text="#{buttonAgregarCliente}"></button>
+		    </td>
+	    </tr>
+	</table>  
+	</form>
+</div>
+
+</body>
+</html>

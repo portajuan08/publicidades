@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head lang="en">
+
+    <title>Spring Framework Guru</title>
+
+    <!--/*/ <th:block th:include="fragments/headerinc :: head"></th:block> /*/-->
+</head>
+<body>
+<div class="container">
+    <!--/*/ <th:block th:include="fragments/header :: header"></th:block> /*/-->
+
+    <h2 th:text="#{fieldDatosContrato}"></h2>
+        <div>
+            <form class="form-horizontal" th:object="${contrato}">
+            	<input type="hidden" th:field="*{id}"/>
+				<div class="form-group">
+                	<label class="col-sm-2 control-label" th:text="#{fieldCliente}"/>
+                    <div class="col-sm-10">
+                        <p class="form-control-static" th:text="*{cliente.nombre}"></p></div>
+                </div>
+                <div class="form-group">
+                	<label class="col-sm-2 control-label" th:text="#{fieldVendedor}"/>
+                    <div class="col-sm-10">
+                        <p class="form-control-static" th:text="*{vendedor}"></p></div>
+                </div>
+                <div class="form-group">
+                	<label class="col-sm-2 control-label" th:text="#{fieldPrecio}"/>
+                    <div class="col-sm-10">
+                        <p class="form-control-static" th:text="*{precio}"></p>
+                    </div>
+                </div>
+                <div class="form-group">
+	                <label class="col-sm-2 control-label" th:text="#{fieldInicio}"/>
+	                <div class="col-sm-10">
+	                    <input type="month" class="form-control" th:field="*{fechaInicio}" readonly="readonly"/>
+	                </div>
+                </div>
+				<div class="form-group">
+	                <label class="col-sm-2 control-label" th:text="#{fieldFin}"/>
+	                <div class="col-sm-10">
+	                    <input type="month" class="form-control" th:field="*{fechaFin}" readonly="readonly"/>
+	                </div>
+                </div>
+                <div class="form-group">
+                    <ul>
+                        <li th:each="item, stat : *{mesesBonificados}" class="itemRow">
+							<div>
+                                <label th:for="${'childField1-'+stat.index}" th:text="#{fieldId}"></label>
+                                <input type="text" class="form-control quantity" name="childField1"
+                                       th:field="*{mesesBonificados[__${stat.index}__].id}"
+                                       th:id="${'childField1-'+stat.index}"/>
+
+
+                            </div>
+                            <div>
+                                <label th:for="${'childField1-'+stat.index}" th:text="#{fieldMes}"></label>
+                                <input type="text" class="form-control quantity" name="childField1"
+                                       th:field="*{mesesBonificados[__${stat.index}__].mes}"
+                                       th:id="${'childField1-'+stat.index}"/>
+
+
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </form>
+    </div>
+</div>
+
+</body>
+</html>
