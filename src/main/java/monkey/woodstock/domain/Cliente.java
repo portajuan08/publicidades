@@ -61,7 +61,9 @@ public class Cliente {
 	}
     
     public String toString(){
-    	return id.toString();
+    	if (id != null)
+    		return id.toString();
+    	return null;
     }
 }
 
