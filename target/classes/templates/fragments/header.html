@@ -9,8 +9,8 @@
     <script src="http://cdn.jsdelivr.net/webjars/jquery/2.1.4/jquery.min.js"
             th:src="@{/webjars/jquery/2.1.4/jquery.min.js}"></script>
 
-    <link href="../../static/css/guru.css"
-          th:href="@{css/guru.css}" rel="stylesheet" media="screen"/>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" 
+    integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
 </head>
 <body>
 
@@ -21,8 +21,8 @@
                 <div class="navbar-collapse collapse">
                 	<a class="navbar-brand" href="#" th:href="@{/}" th:text="#{fieldInicioPag}"></a>
                     <ul class="nav navbar-nav navbar-right">
-                    	<li><a class="navbar-brand" href="?lang=en">English </a><img class="navbar-brand " src="http://localhost:8080/images/bandera_ing.png" ></img></li>
-                    	<li><a class="navbar-brand" href="?lang=es">Español </a><img class="navbar-brand "  src="http://localhost:8080/images/bandera_arg.png"  ></img></li>
+                    	<li><a class="navbar-brand" href="?lang=en">English </a><img class="navbar-brand " th:src="@{/images/bandera_ing.png}" ></img></li>
+                    	<li><a class="navbar-brand" href="?lang=es">Español </a><img class="navbar-brand "  th:src="@{/images/bandera_arg.png}"  ></img></li>
                     </ul>
                 </div>
             </div>
@@ -37,6 +37,7 @@
                     <ul class="nav navbar-nav">
                         <li><a href="#" th:href="@{/clientes}" th:text="#{fieldClientes}"></a></li>
                         <li><a href="#" th:href="@{/contratos}" th:text="#{fieldContratos}"></a></li>
+                        <li><a href="#" th:href="@{/imprimirMes}" th:text="#{fieldImprimirMes}"></a></li>
                     </ul>
                 </div>
             </div>

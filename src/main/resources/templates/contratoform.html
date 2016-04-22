@@ -3,8 +3,21 @@
 <head lang="en">
 
     <title>Spring Framework Guru</title>
+    
 
-    <!--/*/ <th:block th:include="fragments/headerinc :: head"></th:block> /*/-->
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <link href="http://cdn.jsdelivr.net/webjars/bootstrap/3.3.4/css/bootstrap.min.css"
+          th:href="@{/webjars/bootstrap/3.3.4/css/bootstrap.min.css}"
+          rel="stylesheet" media="screen"/>
+
+    <script src="http://cdn.jsdelivr.net/webjars/jquery/2.1.4/jquery.min.js"
+            th:src="@{/webjars/jquery/2.1.4/jquery.min.js}"></script>
+          
+    <link th:href="@{/css/bootstrap-select.min.css}" rel="stylesheet" media="screen"/>
+    
+    <script th:src="@{/js/bootstrap-select.min.js}"></script>
+          
+	<!--/*/ <th:block th:include="fragments/headerinc :: head"></th:block> /*/-->
 </head>
 <body>
 <div class="container">
@@ -17,26 +30,26 @@
 			<div class="form-group">
             	<label class="col-sm-2 control-label" th:text="#{fieldCliente}"/>
             	<div class="col-sm-10">
-					<select class="btn btn-default dropdown-toggle" th:field="*{cliente}">
+					<select class="selectpicker" data-live-search="true" th:field="*{cliente}">
 		          		<option class="btn btn-default dropdown-toggle" th:each="cliente : ${clientes}" 
 		                	  th:value="${cliente.id}" 
 		                  	  th:text="${cliente.nombre}">Thymus Thymi</option>
 		        	</select>
-		        	<td th:if="${#fields.hasErrors('cliente')}" th:errors="*{cliente}">Cliente Error</td>
+		        	<div th:if="${#fields.hasErrors('cliente')}" th:errors="*{cliente}" class="alert alert-danger" role="alert">Cliente Error</div>
 	        	</div>
         	</div>
             <div class="form-group">
                 <label class="col-sm-2 control-label" th:text="#{fieldVendedor}"/>
                 <div class="col-sm-10">
                     <input type="text" class="form-control" th:field="*{vendedor}"/>
-                    <td th:if="${#fields.hasErrors('vendedor')}" th:errors="*{vendedor}">Vendedor Error</td>
+                    <div th:if="${#fields.hasErrors('vendedor')}" th:errors="*{vendedor}" class="alert alert-danger" role="alert">Vendedor Error</div>
                 </div>
             </div>
             <div class="form-group">
                 <label class="col-sm-2 control-label" th:text="#{fieldPrecio}"/>
                 <div class="col-sm-10">
                     <input type="number" step="0.01" class="form-control" th:field="*{precio}"/>
-                    <td th:if="${#fields.hasErrors('precio')}" th:errors="*{precio}">Precio Error</td>
+                    <div th:if="${#fields.hasErrors('precio')}" th:errors="*{precio}" class="alert alert-danger" role="alert">Precio Error</div>
                 </div>
             </div>
             
@@ -44,14 +57,14 @@
                 <label class="col-sm-2 control-label" th:text="#{fieldInicio}"/>
                 <div class="col-sm-10">
                     <input type="month" class="form-control" th:field="*{fechaInicio}"/>
-                    <td th:if="${#fields.hasErrors('fechaInicio')}" th:errors="*{fechaInicio}">FechaInicio Error</td>
+                    <div th:if="${#fields.hasErrors('fechaInicio')}" th:errors="*{fechaInicio}" class="alert alert-danger" role="alert">FechaInicio Error</div>
                 </div>
             </div>
 			<div class="form-group">
                 <label class="col-sm-2 control-label" th:text="#{fieldFin}"/>
                 <div class="col-sm-10">
                     <input type="month" class="form-control" th:field="*{fechaFin}"/>
-                    <td th:if="${#fields.hasErrors('fechaFin')}" th:errors="*{fechaFin}">FechaFin Error</td>
+                    <div th:if="${#fields.hasErrors('fechaFin')}" th:errors="*{fechaFin}" class="alert alert-danger" role="alert">FechaFin Error</div>
                 </div>
             </div>
             
@@ -63,12 +76,6 @@
                 <ul>
                     <li th:each="item, stat : *{mesesBonificados}" class="itemRow">
                         <input type="hidden" th:field="*{mesesBonificados[__${stat.index}__].id}"/>
-						<div>
-                            <label th:for="${'childField1-'+stat.index}" th:text="#{fieldId}"></label>
-                            <input type="text" class="form-control quantity" name="childField1"
-                                   th:field="*{mesesBonificados[__${stat.index}__].id}"
-                                   th:id="${'childField1-'+stat.index}"/>
-                        </div>
                         <div>
                             <label th:for="${'childField1-'+stat.index}" th:text="#{fieldMes}"></label>
                             <input type="month" class="form-control quantity" name="childField1"

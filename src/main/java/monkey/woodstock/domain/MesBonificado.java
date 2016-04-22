@@ -15,7 +15,6 @@ public class MesBonificado {
     @Column(name = "MES_ID")
     private Integer id;
     
-    @NotNull
     private String mes;
 
 	public Integer getId() {

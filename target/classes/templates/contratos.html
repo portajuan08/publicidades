@@ -37,7 +37,10 @@
             </tr>
         </table>
 
-    </div>    
+    </div>   
+    <div th:if="${#lists.isEmpty(contratos)}">
+    	<label class=" control-label" th:text="#{fieldNoContratos}"/>
+    </div> 
 	<form class="form-horizontal" th:object="${contrato}" th:action="@{/contrato/new}">
 	
 	<table>

@@ -45,24 +45,19 @@
                 <div class="form-group">
                     <ul>
                         <li th:each="item, stat : *{mesesBonificados}" class="itemRow">
-							<div>
-                                <label th:for="${'childField1-'+stat.index}" th:text="#{fieldId}"></label>
-                                <input type="text" class="form-control quantity" name="childField1"
-                                       th:field="*{mesesBonificados[__${stat.index}__].id}"
-                                       th:id="${'childField1-'+stat.index}"/>
-
-
-                            </div>
                             <div>
                                 <label th:for="${'childField1-'+stat.index}" th:text="#{fieldMes}"></label>
-                                <input type="text" class="form-control quantity" name="childField1"
-                                       th:field="*{mesesBonificados[__${stat.index}__].mes}"
+                                <input type="month" class="form-control quantity" name="childField1"
+                                       th:field="*{mesesBonificados[__${stat.index}__].mes}" readonly="readonly"
                                        th:id="${'childField1-'+stat.index}"/>
 
 
                             </div>
                         </li>
                     </ul>
+                </div>
+				<div>
+                	<button type="submit" class="btn btn-success" name="volver" th:text="#{buttonVolver}"></button>
                 </div>
             </form>
     </div>

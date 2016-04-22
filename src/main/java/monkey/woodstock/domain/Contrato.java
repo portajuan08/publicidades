@@ -25,11 +25,8 @@ public class Contrato {
     @Column(name = "CONTRATO_ID")
     private Integer id;
 
-    @NotNull(message = "El vendedor no puede ser vacio.")
-    @Length(min = 1, message = "El vendedor no puede ser vacio.")
     private String vendedor;
     
-    @Min(0)
     private BigDecimal precio;
     
     private String fechaInicio;

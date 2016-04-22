@@ -1,32 +1,28 @@
 package monkey.woodstock.controllers;
 
-import java.sql.Date;
-import java.util.Calendar;
-import java.util.GregorianCalendar;
 import java.util.Iterator;
-import java.util.Random;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
-
-import org.hibernate.exception.ConstraintViolationException;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.DataIntegrityViolationException;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
-import org.springframework.validation.ObjectError;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-
-import com.mysql.jdbc.exceptions.MySQLIntegrityConstraintViolationException;
 
 import monkey.woodstock.domain.Contrato;
 import monkey.woodstock.domain.MesBonificado;
 import monkey.woodstock.services.ClienteService;
 import monkey.woodstock.services.ContratoService;
 import monkey.woodstock.services.MesBonificadoService;
+import monkey.woodstock.validator.ContratoValidator;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.ObjectError;
+import org.springframework.web.bind.WebDataBinder;
+import org.springframework.web.bind.annotation.InitBinder;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 
 @Controller
 public class ContratoController {
@@ -34,6 +30,14 @@ public class ContratoController {
     private ContratoService contratoService;
     private MesBonificadoService mesBonificadoService;
     private ClienteService clienteService;
+    
+    @Autowired
+    private ContratoValidator contratoValidator;
+     
+    @InitBinder
+    private void initBinder(WebDataBinder binder) {
+        binder.setValidator(contratoValidator);
+    }
 
     @Autowired
     public void setContratoService(ContratoService contratoService) {
@@ -62,6 +66,11 @@ public class ContratoController {
         model.addAttribute("contrato", contrato);
         return "contratoshow";
     }
+    
+    @RequestMapping(value = "contrato/{id}", params = {"volver"})
+    public String volverContrato() {
+        return "redirect:/contratos";
+    }
 
     @RequestMapping(value = "contrato/edit/{id}")
     public String edit(@PathVariable Integer id, Model model) {
@@ -85,14 +94,8 @@ public class ContratoController {
     }
     
     @RequestMapping(value = "contrato/new", params = {"addRow"})
-    public String addRow(Model model ,@Valid Contrato contrato, BindingResult bindingResult) {
+    public String addRow(Model model, Contrato contrato) {
         MesBonificado mesBonificado = new MesBonificado();
-        Calendar calendar = GregorianCalendar.getInstance();
-        StringBuilder stringBuilder = new StringBuilder();
-		stringBuilder.append(calendar.getTime().getYear());
-		stringBuilder.append("-");
-		stringBuilder.append(calendar.getTime().getMonth());
-		mesBonificado.setMes(stringBuilder.toString());
         mesBonificadoService.saveMesBonificado(mesBonificado);
         contrato.getMesesBonificados().add(mesBonificado);
         model.addAttribute("clientes", clienteService.listAllClientes());
@@ -100,11 +103,7 @@ public class ContratoController {
     }
     
     @RequestMapping(value = "contrato/new", params = {"removeRow"})
-    public String removeRow(@Valid Contrato contrato, HttpServletRequest req, Model model , BindingResult bindingResult) {
-
-        if (bindingResult.hasErrors()) {
-            return "contratoform";
-        }
+    public String removeRow(Contrato contrato, HttpServletRequest req, Model model ){
         String sid = req.getParameter("removeRow");
         if (sid != null && !sid.isEmpty()) {
             Integer id = Integer.valueOf(sid);

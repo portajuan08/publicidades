@@ -45,6 +45,11 @@ public class ClienteController {
         model.addAttribute("cliente", cliente);
         return "clienteshow";
     }
+    
+    @RequestMapping(value = "cliente/{id}", params = {"volver"})
+    public String volverCliente() {
+        return "redirect:/clientes";
+    }
 
     @RequestMapping(value = "cliente/edit/{id}")
     public String edit(@PathVariable Integer id, Model model) {
