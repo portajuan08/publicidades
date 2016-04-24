@@ -8,7 +8,7 @@
 </head>
 <body>
 <div class="container">
-    <!--/*/ <th:block th:include="fragments/header :: header"></th:block> /*/-->
+    <!--/*/ <th:block th:include="fragments/headerImprimir :: header"></th:block> /*/-->
     
 	<div class="panel panel-success">
 		
@@ -66,24 +66,24 @@
     		<h3 class="panel-title">Filtro de busqueda</h3> 
     	</div>
 		<div class="panel-body">
-			<form class="form-inline">
+			<form class="form-inline" th:object="${filtroBusqueda}" th:action="@{/imprimirMes}">
 			<div class="col-lg-6">
 				<div>
 			  	<label>
-			  		<input type="checkbox" checked="checked">Vence este Mes</input>
+			  		<input type="checkbox" th:field="*{venceMes}">Mostrar vencidos este Mes</input>
 		  		</label>
 		  		</div>
 		  		<div>
 		  		<label>
-		  			<input type="checkbox" checked="checked">Bonificado este Mes</input>
+		  			<input type="checkbox" th:field="*{bonificadoMes}">Mostrar bonificados este Mes</input>
 		  		</label>
 		  		</div>
 		  	</div>
 		  	<div class="col-lg-6">
 		    <div class="input-group">
-		      <input type="month" class="form-control" placeholder="Mes"></input>
+		      <input type="month" class="form-control" placeholder="Mes" th:field="*{mes}"></input>
 		      <span class="input-group-btn">
-		        <button class="btn btn-default" type="button">Buscar</button>
+		        <button class="btn btn-default" type="submit">Buscar</button>
 		      </span>
 		    </div><!-- /input-group -->
 		  </div><!-- /.col-lg-6 -->

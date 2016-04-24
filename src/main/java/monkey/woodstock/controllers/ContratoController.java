@@ -5,6 +5,7 @@ import java.util.Iterator;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
+import monkey.woodstock.Util.UtilTime;
 import monkey.woodstock.domain.Contrato;
 import monkey.woodstock.domain.MesBonificado;
 import monkey.woodstock.services.ClienteService;
@@ -88,6 +89,8 @@ public class ContratoController {
     @RequestMapping(value = "contrato/new")
     public String add(Model model) {
         Contrato contrato = new Contrato();
+        contrato.setFechaInicio(UtilTime.getMesAnioActual());
+        contrato.setFechaFin(UtilTime.getMesAnioSiguiente());
         model.addAttribute(contrato);
         model.addAttribute("clientes", clienteService.listAllClientes());
         return "contratoform";
@@ -96,6 +99,7 @@ public class ContratoController {
     @RequestMapping(value = "contrato/new", params = {"addRow"})
     public String addRow(Model model, Contrato contrato) {
         MesBonificado mesBonificado = new MesBonificado();
+        mesBonificado.setMes(UtilTime.getMesAnioActual());
         mesBonificadoService.saveMesBonificado(mesBonificado);
         contrato.getMesesBonificados().add(mesBonificado);
         model.addAttribute("clientes", clienteService.listAllClientes());
@@ -128,7 +132,6 @@ public class ContratoController {
     
     @RequestMapping(value = "contrato/new", method = RequestMethod.POST)
     public String saveContrato(@Valid Contrato contrato, BindingResult bindingResult, Model model)  {
-    	System.out.println("cliente id => " + contrato.getCliente());
         if (bindingResult.hasErrors()) {
         	model.addAttribute("clientes", clienteService.listAllClientes());
             return "contratoform";
@@ -136,15 +139,7 @@ public class ContratoController {
         for (MesBonificado mesBonificado : contrato.getMesesBonificados()) {
             mesBonificadoService.saveMesBonificado(mesBonificado);
         }
-        try{
-        	contratoService.saveContrato(contrato);
-        }catch(DataIntegrityViolationException e ){
-        	System.out.println("cliente id => " + contrato.getCliente());
-        	ObjectError oError = new ObjectError("cliente", "El cliente ya tiene un contrato");
-        	bindingResult.addError(oError);
-        	model.addAttribute("clientes", clienteService.listAllClientes());
-        	return "contratoform";
-        }
+        contratoService.saveContrato(contrato);
         return "redirect:/contrato/" + contrato.getId();
     }
 }

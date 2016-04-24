@@ -8,12 +8,12 @@
 </head>
 <body>
 <div class="container">
-    <!--/*/ <th:block th:include="fragments/header :: header"></th:block> /*/-->
+    <!--/*/ <th:block th:include="fragments/headerImprimir :: header"></th:block> /*/-->
     
 	<div class="panel panel-success">
 		
 		<div class="panel-heading"> 
-    		<h3 class="panel-title">Filtro de busqueda</h3> 
+    		<h3 class="panel-title">Campos visibles en la impresión</h3> 
     	</div>
 		<div class="panel-body">
 		<form class="form-inline">
@@ -23,51 +23,71 @@
 		  	</label>
 		  </div>
 		  <div class="col-lg-6">
-		  </div>
-		  <div class="col-lg-6">
 		  	<label>
 		  		<input type="checkbox">Direccion</input>
 		  	</label>
 		  </div>
 		  <div class="col-lg-6">
 		  	<label>
-		  		<input type="checkbox">Vendedor</input>
+		  		<input type="checkbox" checked="checked">Vendedor</input>
 		  	</label>
 		  </div>
 		  <div class="col-lg-6">
 		  	<label>
-		  		<input type="checkbox">Precio</input>
+		  		<input type="checkbox" checked="checked">Precio</input>
 		  	</label>
 		  </div>
 		  <div class="col-lg-6">
 		  	<label>
-		  		<input type="checkbox">Inicio de Contrato</input>
+		  		<input type="checkbox" checked="checked">Inicio de Contrato</input>
 		  	</label>
 		  </div>
 		  <div class="col-lg-6">
 		  	<label>
-		  		<input type="checkbox">Fin de Contrato</input>
+		  		<input type="checkbox" checked="checked">Fin de Contrato</input>
 		  	</label>
 		  </div>
 		  <div class="col-lg-6">
 		  	<label>
-		  		<input type="checkbox">Es Bonificado</input>
+		  		<input type="checkbox" checked="checked">Es Bonificado</input>
 		  	</label>
 		  </div>
 		  <div class="col-lg-6">
 		  	<label>
-		  		<input type="checkbox">Se Vence</input>
+		  		<input type="checkbox" checked="checked">Se Vence</input>
 		  	</label>
 		  </div>
 		  </form>
-		  <div class="col-lg-6">
+	</div>
+	</div>
+	<div class="panel panel-success">
+		
+		<div class="panel-heading"> 
+    		<h3 class="panel-title">Filtro de busqueda</h3> 
+    	</div>
+		<div class="panel-body">
+			<form class="form-inline" th:object="${filtroBusqueda}" th:action="@{/imprimirMes}">
+			<div class="col-lg-6">
+				<div>
+			  	<label>
+			  		<input type="checkbox" th:field="*{venceMes}">Mostrar vencidos este Mes</input>
+		  		</label>
+		  		</div>
+		  		<div>
+		  		<label>
+		  			<input type="checkbox" th:field="*{bonificadoMes}">Mostrar bonificados este Mes</input>
+		  		</label>
+		  		</div>
+		  	</div>
+		  	<div class="col-lg-6">
 		    <div class="input-group">
-		      <input type="month" class="form-control" placeholder="Mes"></input>
+		      <input type="month" class="form-control" placeholder="Mes" th:field="*{mes}"></input>
 		      <span class="input-group-btn">
-		        <button class="btn btn-default" type="button">Buscar</button>
+		        <button class="btn btn-default" type="submit">Buscar</button>
 		      </span>
 		    </div><!-- /input-group -->
 		  </div><!-- /.col-lg-6 -->
+		  </form>
 		</div><!-- /.row -->
 	</div>
     <h2 th:text="#{fieldContratos}"></h2>

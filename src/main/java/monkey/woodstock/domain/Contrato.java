@@ -111,6 +111,9 @@ public class Contrato {
                     inverseJoinColumns={ @JoinColumn(name="CHOFER_ID", referencedColumnName="CHOFER_ID") } )
     private List<Chofer> choferes;*/
     
+	public String toString(){
+		return "Mes inicio => " + fechaInicio + " Mes fin => " + fechaFin;
+	}
     
 }
 

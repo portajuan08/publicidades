@@ -1,10 +1,15 @@
 package monkey.woodstock.services;
 
 
+import java.util.List;
+
 import monkey.woodstock.domain.Contrato;
+import monkey.woodstock.domain.FiltroBusqueda;
 
 public interface ContratoService {
-    Iterable<Contrato> listAllContratos();
+    List<Contrato> listAllContratos();
+    
+    List<Contrato> listAllContratos(FiltroBusqueda filtroBusqueda);
 
     Contrato getContratoById(Integer id);
     

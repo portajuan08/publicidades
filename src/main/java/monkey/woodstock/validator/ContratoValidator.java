@@ -31,6 +31,8 @@ public class ContratoValidator implements Validator {
     	Contrato Contrato = (Contrato) target;
     	ValidationUtils.rejectIfEmpty(errors, "vendedor", "contrato.vendedor.empty");
     	ValidationUtils.rejectIfEmpty(errors, "precio", "contrato.precio.empty");
+    	ValidationUtils.rejectIfEmpty(errors, "fechaInicio", "contrato.fechaInicio.empty");
+    	ValidationUtils.rejectIfEmpty(errors, "fechaFin", "contrato.fechaFin.empty");
     	if (contratoService.getContratoByCliente(Contrato.getCliente().getId()) != null)
     		errors.rejectValue("cliente", "contrato.cliente.duplicate");
  
