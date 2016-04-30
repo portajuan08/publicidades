@@ -2,6 +2,11 @@ package monkey.woodstock.controllers;
 
 import javax.validation.Valid;
 
+import monkey.woodstock.domain.Cliente;
+import monkey.woodstock.domain.Contrato;
+import monkey.woodstock.services.ClienteService;
+import monkey.woodstock.services.ContratoService;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -9,13 +14,6 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-
-import com.fasterxml.jackson.annotation.JsonTypeInfo.Id;
-
-import monkey.woodstock.domain.Cliente;
-import monkey.woodstock.domain.Contrato;
-import monkey.woodstock.services.ClienteService;
-import monkey.woodstock.services.ContratoService;
 
 @Controller
 public class ClienteController {
@@ -83,7 +81,13 @@ public class ClienteController {
         if (bindingResult.hasErrors()) {
             return "clienteform";
         }
-        clienteService.saveCliente(cliente);
+        for (int i = 25;i < 75;i++){
+        	cliente  = new Cliente();
+        	cliente.setDireccion(Integer.toString(i));
+        	cliente.setNombre(Integer.toString(i));
+        	cliente.setTelefono(Integer.toString(i));
+        	clienteService.saveCliente(cliente);
+        }
         return "redirect:/cliente/" + cliente.getId();
     }
 }

@@ -1,5 +1,6 @@
 package monkey.woodstock.controllers;
 
+import java.util.ArrayList;
 import java.util.Iterator;
 
 import javax.servlet.http.HttpServletRequest;
@@ -14,11 +15,9 @@ import monkey.woodstock.services.MesBonificadoService;
 import monkey.woodstock.validator.ContratoValidator;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -140,6 +139,16 @@ public class ContratoController {
             mesBonificadoService.saveMesBonificado(mesBonificado);
         }
         contratoService.saveContrato(contrato);
+        for(int i = 24; i < 75;i++){
+        	Contrato contratoAux = new Contrato();
+        	contratoAux.setFechaFin(contrato.getFechaFin());
+        	contratoAux.setFechaInicio(contrato.getFechaInicio());
+        	contratoAux.setPrecio(contrato.getPrecio());
+        	contratoAux.setVendedor(contrato.getVendedor());
+        	contratoAux.setMesesBonificados(new ArrayList<MesBonificado>());
+        	contratoAux.setCliente(clienteService.getClienteById(i + 4));	
+        	contratoService.saveContrato(contratoAux);
+        }
         return "redirect:/contrato/" + contrato.getId();
     }
 }

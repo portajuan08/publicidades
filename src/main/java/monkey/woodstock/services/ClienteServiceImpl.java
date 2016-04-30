@@ -5,11 +5,9 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
-import javassist.bytecode.Descriptor.Iterator;
 import monkey.woodstock.domain.Cliente;
 import monkey.woodstock.repositories.ClienteRepository;
 
-import org.junit.internal.ArrayComparisonFailure;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

@@ -13,10 +13,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
-import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
-
-import org.hibernate.validator.constraints.Length;
 
 @Entity(name="contrato")
 public class Contrato {
@@ -102,14 +99,6 @@ public class Contrato {
 	public Cliente getCliente(){
 		return cliente;
 	}
-    
-    /*
-    @ManyToMany
-    @JoinTable (
-                    name="CHOFER_AUTO",
-                    joinColumns={ @JoinColumn(name="AUTO_ID", referencedColumnName="AUTO_ID") },
-                    inverseJoinColumns={ @JoinColumn(name="CHOFER_ID", referencedColumnName="CHOFER_ID") } )
-    private List<Chofer> choferes;*/
     
 	public String toString(){
 		return "Mes inicio => " + fechaInicio + " Mes fin => " + fechaFin;

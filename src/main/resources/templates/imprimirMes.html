@@ -4,118 +4,113 @@
 
     <title>Spring Framework Guru</title>
 
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <link href="http://cdn.jsdelivr.net/webjars/bootstrap/3.3.4/css/bootstrap.min.css"
+          th:href="@{/webjars/bootstrap/3.3.4/css/bootstrap.min.css}"
+          rel="stylesheet" media="screen"/>
+
+    <script src="http://cdn.jsdelivr.net/webjars/jquery/2.1.4/jquery.min.js"
+            th:src="@{/webjars/jquery/2.1.4/jquery.min.js}"></script>
+          
+    <link th:href="@{/css/bootstrap-select.min.css}" rel="stylesheet" media="screen"/>
+    
+    <script th:src="@{/js/bootstrap-select.min.js}"></script>
+    
     <!--/*/ <th:block th:include="fragments/headerinc :: head"></th:block> /*/-->
 </head>
 <body>
 <div class="container">
-    <!--/*/ <th:block th:include="fragments/headerImprimir :: header"></th:block> /*/-->
-    
-	<div class="panel panel-success">
-		
-		<div class="panel-heading"> 
-    		<h3 class="panel-title">Campos visibles en la impresión</h3> 
+    <form class="form-inline" th:object="${filtroBusqueda}" th:action="@{/imprimirMes}">
+	    <div th:fragment="header">
+	        <nav class="navbar navbar-default">
+	            <div class="container-fluid">
+	                <div class="navbar-collapse collapse">
+	                	<a class="navbar-brand" href="#" th:href="@{/}" th:text="#{fieldInicioPag}"></a>
+	                    <ul class="nav navbar-nav navbar-right">
+	                    	<li><a class="navbar-brand" href="?lang=en">English </a><img class="navbar-brand " th:src="@{/images/bandera_ing.png}" ></img></li>
+	                    	<li><a class="navbar-brand" href="?lang=es">Español </a><img class="navbar-brand "  th:src="@{/images/bandera_arg.png}"  ></img></li>
+	                    </ul>
+	                </div>
+	            </div>
+	        </nav>
+	    </div>
+	    <div th:fragment="header">
+	        <nav class="navbar navbar-inverse">
+	            <div class="container-fluid">
+	                <div class="navbar-collapse collapse">
+	                    <ul class="nav navbar-nav">
+	                        <li><a href="#" th:href="@{/clientes}" th:text="#{fieldClientes}"></a></li>
+	                        <li><a href="#" th:href="@{/contratos}" th:text="#{fieldContratos}"></a></li>
+	                        <li><a href="#" th:href="@{/imprimirMes}" th:text="#{fieldImprimirMes}"></a></li>
+	                    </ul>
+	                    <ul class="nav navbar-nav navbar-right">
+	                    	<li><button class="navbar-brand" href="#" type="submit" name="imprimir" ><i class="glyphicon glyphicon-print icon-red  "></i></button></li>
+	                    </ul>
+	                </div>
+	            </div>
+	        </nav>
+	    </div>
+		<div>
+		<!-- Nav tabs -->
+			<ul class="nav nav-tabs" role="tablist">
+	  			<li role="presentation" class="active"><a href="#filtro" aria-controls="filtro" role="tab" data-toggle="tab" th:text="#{tabFiltroBusqueda}"></a></li>
+	  			<li role="presentation"><a href="#campos" aria-controls="campos" role="tab" data-toggle="tab" th:text="#{tabCamposVisibles}"></a></li>
+			</ul>
+	
+			<!-- Tab panes -->
+	  		<div class="tab-content">
+	    		<div role="tabpanel" class="tab-pane fade in active" id="filtro">
+					<form class="form-inline">
+						<div class="col-lg-6"><div><label><input type="checkbox" th:field="*{venceMes}" th:text="#{fieldVenceMes}"></input></label></div>
+						<div><label><input type="checkbox" th:field="*{bonificadoMes}" th:text="#{fieldBonificadoMes}"></input></label></div></div>
+						<div class="col-lg-6">
+							<div class="input-group">
+								<input type="month" class="form-control" placeholder="Mes" th:field="*{mes}"></input>
+								<span class="input-group-btn"><button class="btn btn-default" type="submit" th:text="#{buttonBuscar}"></button></span>
+							</div><!-- /input-group -->
+						</div><!-- /.col-lg-6 -->
+					</form>
+	    		</div>
+	    		<div role="tabpanel" class="tab-pane fade" id="campos">
+						<div class="col-lg-6"><label><input type="checkbox" th:text="#{fieldTelefono}" th:field="*{telefono}"></input></label> </div>
+						<div class="col-lg-6"><label><input type="checkbox" th:text="#{fieldDireccion}" th:field="*{direccion}"></input></label></div>
+						<div class="col-lg-6"><label><input type="checkbox" th:text="#{fieldVendedor}" th:field="*{vendedor}"></input></label></div>
+			  			<div class="col-lg-6"><label><input type="checkbox" th:text="#{fieldPrecio}" th:field="*{precio}"></input></label></div>
+			  			<div class="col-lg-6"><label><input type="checkbox" th:text="#{fieldInicio}" th:field="*{inicio}"></input></label></div>
+			  			<div class="col-lg-6"><label><input type="checkbox" th:text="#{fieldFin}" th:field="*{fin}"></input></label></div>
+			  			<div class="col-lg-6"><label><input type="checkbox" th:text="#{fieldEsBonificado}" th:field="*{esBonificado}"></input></label></div>
+			  			<div class="col-lg-6"><label><input type="checkbox" th:text="#{fieldSeVence}" th:field="*{seVence}"></input></label></div>
+	    		</div>
+	  		</div>
+		</div>
+	    <div class="panel panel-default">
+	    	<div class="panel-heading" th:text="#{fieldContratos}"></div>
+				
+	   		<div th:if="${not #lists.isEmpty(contratos)}">
+	       		<table class="table table-striped">
+	            	<tr>
+		                <th th:text="#{fieldId}"/>
+	    	            <th th:text="#{fieldCliente}"/>
+	        	    	<th th:text="#{fieldVendedor}"/>
+	            	    <th th:text="#{fieldPrecio}"/>
+	                	<th th:text="#{fieldInicio}"/>
+	                	<th th:text="#{fieldFin}"/>
+	            	</tr>
+	            	<tr th:each="contrato : ${contratos}">
+	                	<td th:text="${contrato.id}"><a href="/contrato/${contrato.id}">Id</a></td>
+	                	<td th:text="${contrato.cliente.nombre}">cliente</td>
+	                	<td th:text="${contrato.vendedor}">Vendedor</td>
+		                <td th:text="${contrato.precio}">Precio</td>
+	    	            <td th:text="${contrato.fechaInicio}">Inicio</td>
+	        	        <td th:text="${contrato.fechaFin}">Fin</td>
+	            	</tr>
+	       		</table>
+	       	</div>
+	    </div>  
+    	<div th:if="${#lists.isEmpty(contratos)}">
+    		<label class="col-sm-2 control-label" th:text="#{fieldNoContratos}"/>
     	</div>
-		<div class="panel-body">
-		<form class="form-inline">
-		  <div class="col-lg-6">
-		  	<label>
-		  		<input type="checkbox">Telefono</input>
-		  	</label>
-		  </div>
-		  <div class="col-lg-6">
-		  	<label>
-		  		<input type="checkbox">Direccion</input>
-		  	</label>
-		  </div>
-		  <div class="col-lg-6">
-		  	<label>
-		  		<input type="checkbox" checked="checked">Vendedor</input>
-		  	</label>
-		  </div>
-		  <div class="col-lg-6">
-		  	<label>
-		  		<input type="checkbox" checked="checked">Precio</input>
-		  	</label>
-		  </div>
-		  <div class="col-lg-6">
-		  	<label>
-		  		<input type="checkbox" checked="checked">Inicio de Contrato</input>
-		  	</label>
-		  </div>
-		  <div class="col-lg-6">
-		  	<label>
-		  		<input type="checkbox" checked="checked">Fin de Contrato</input>
-		  	</label>
-		  </div>
-		  <div class="col-lg-6">
-		  	<label>
-		  		<input type="checkbox" checked="checked">Es Bonificado</input>
-		  	</label>
-		  </div>
-		  <div class="col-lg-6">
-		  	<label>
-		  		<input type="checkbox" checked="checked">Se Vence</input>
-		  	</label>
-		  </div>
-		  </form>
-	</div>
-	</div>
-	<div class="panel panel-success">
-		
-		<div class="panel-heading"> 
-    		<h3 class="panel-title">Filtro de busqueda</h3> 
-    	</div>
-		<div class="panel-body">
-			<form class="form-inline" th:object="${filtroBusqueda}" th:action="@{/imprimirMes}">
-			<div class="col-lg-6">
-				<div>
-			  	<label>
-			  		<input type="checkbox" th:field="*{venceMes}">Mostrar vencidos este Mes</input>
-		  		</label>
-		  		</div>
-		  		<div>
-		  		<label>
-		  			<input type="checkbox" th:field="*{bonificadoMes}">Mostrar bonificados este Mes</input>
-		  		</label>
-		  		</div>
-		  	</div>
-		  	<div class="col-lg-6">
-		    <div class="input-group">
-		      <input type="month" class="form-control" placeholder="Mes" th:field="*{mes}"></input>
-		      <span class="input-group-btn">
-		        <button class="btn btn-default" type="submit">Buscar</button>
-		      </span>
-		    </div><!-- /input-group -->
-		  </div><!-- /.col-lg-6 -->
-		  </form>
-		</div><!-- /.row -->
-	</div>
-    <h2 th:text="#{fieldContratos}"></h2>
-			
-    <div th:if="${not #lists.isEmpty(contratos)}">
-        <table class="table table-striped">
-            <tr>
-                <th th:text="#{fieldId}"/>
-                <th th:text="#{fieldCliente}"/>
-            	<th th:text="#{fieldVendedor}"/>
-                <th th:text="#{fieldPrecio}"/>
-                <th th:text="#{fieldInicio}"/>
-                <th th:text="#{fieldFin}"/>
-            </tr>
-            <tr th:each="contrato : ${contratos}">
-                <td th:text="${contrato.id}"><a href="/contrato/${contrato.id}">Id</a></td>
-                <td th:text="${contrato.cliente.nombre}">cliente</td>
-                <td th:text="${contrato.vendedor}">Vendedor</td>
-                <td th:text="${contrato.precio}">Precio</td>
-                <td th:text="${contrato.fechaInicio}">Inicio</td>
-                <td th:text="${contrato.fechaFin}">Fin</td>
-            </tr>
-        </table>
-
-    </div>  
-    <div th:if="${#lists.isEmpty(contratos)}">
-    	<label class="col-sm-2 control-label" th:text="#{fieldNoContratos}"/>
-    </div>
+	</form>
 </div>
 
 </body>

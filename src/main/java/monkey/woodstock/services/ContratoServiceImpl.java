@@ -1,19 +1,16 @@
 package monkey.woodstock.services;
 
-import java.sql.Date;
 import java.sql.Timestamp;
-import java.util.ArrayList;
-import java.util.GregorianCalendar;
 import java.util.Iterator;
 import java.util.List;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 
 import monkey.woodstock.Util.UtilTime;
 import monkey.woodstock.domain.Contrato;
 import monkey.woodstock.domain.FiltroBusqueda;
 import monkey.woodstock.repositories.ContratoRepository;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 @Service
 public class ContratoServiceImpl implements ContratoService {
