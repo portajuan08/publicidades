@@ -6,11 +6,37 @@
 
 
     <!--/*/ <th:block th:include="fragments/headerinc :: head"></th:block> /*/-->
+    
+<style>
+
+#programas-box {
+	width: 300px;
+	padding: 20px;
+	margin: 100px auto;
+	background: #fff;
+	-webkit-border-radius: 2px;
+	-moz-border-radius: 2px;
+	border: 1px solid #e7e7e7;
+}
+</style>
 </head>
 <body>
 
 <div class="container">
-    <!--/*/ <th:block th:include="fragments/header :: header"></th:block> /*/-->
+    <!--/*/ <th:block th:include="fragments/barraInicio :: header"></th:block> /*/-->
+    <h1 th:inline="text">Hello [[${#httpServletRequest.remoteUser}]]!</h1>
+    
+    <div sec:authorize="hasRole('ROLE_ADMIN')">
+  		This content is only shown to administrators.
+	</div>
+	<div sec:authorize="hasRole('ROLE_USER')">
+  		This content is only shown to users.
+	</div>
+	
+	<div id="login-box">
+	    <div sec:authorize="hasRole('ROLE_ADMIN')"><a class="btn btn-success" th:href="@{/clientes}" th:text="#{buttonIngresar}"></a></div>
+	    <div sec:authorize="hasRole('ROLE_USER')"><a class="btn btn-success" th:href="@{/contratos}" th:text="#{buttonIngresar}"></a></div>
+	</div>
 </div>
 </body>
 </html>

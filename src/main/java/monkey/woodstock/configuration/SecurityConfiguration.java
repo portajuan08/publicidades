@@ -1,11 +1,14 @@
 package monkey.woodstock.configuration;
 
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.annotation.web.servlet.configuration.EnableWebMvcSecurity;
+import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 
 @Configuration //annotation lets Spring know that this file contains configuration information
@@ -44,18 +47,52 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .and()
                 .logout().logoutRequestMatcher(new AntPathRequestMatcher("/logout")).logoutSuccessUrl("/login")
                 .permitAll();
-*/
-    	httpSecurity.authorizeRequests().antMatchers("/").permitAll().and()
-        .authorizeRequests().antMatchers("/console/**").permitAll();
 
-		httpSecurity.csrf().disable();
+
+		
 		httpSecurity.headers().frameOptions().disable();
+    	
+		httpSecurity
+        .authorizeRequests()
+            .antMatchers("/resources/**").permitAll() 
+            .anyRequest().authenticated();
+		
+		httpSecurity.formLogin().failureUrl("/login?error")
+        .defaultSuccessUrl("/")
+        .loginPage("/login")
+        .successHandler(successHandler())
+        .permitAll()
+        .and()
+        .logout().logoutRequestMatcher(new AntPathRequestMatcher("/logout")).logoutSuccessUrl("/login")
+        .permitAll();
+        
+        */
+    	httpSecurity.csrf().disable();
+    	httpSecurity.headers().frameOptions().disable();
+    	httpSecurity
+         .authorizeRequests()
+             .antMatchers("/webjars/**","/images/**").permitAll()
+             .anyRequest().authenticated();
+    	httpSecurity
+    	.formLogin().failureUrl("/login?error")
+        .loginPage("/login").defaultSuccessUrl("/")
+        .successHandler(successHandler())
+        .permitAll()
+        .and()
+         .logout()
+             .logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
+             .logoutSuccessUrl("/");
 
     }
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
         auth.inMemoryAuthentication().withUser("user").password("password").roles("USER");
+        auth.inMemoryAuthentication().withUser("admin").password("password").roles("USER","ADMIN");
     }
-
+    
+    @Bean
+    public AuthenticationSuccessHandler successHandler() {
+    	return new MyCustomLoginSuccessHandler("/");
+    }
 }

@@ -21,7 +21,6 @@ class PdfFileCreator {
     private static final Logger LOGGER = LoggerFactory.getLogger(PdfFileCreator.class);
  
     void writePdfToResponse(PdfFileRequest fileRequest, HttpServletResponse response) {
-    	System.out.println("llego 1");
         String pdfFileName = fileRequest.getFileName();
         requireNotNull(pdfFileName, "The file name of the created PDF must be set");
         requireNotEmpty(pdfFileName, "File name of the created PDF cannot be empty");
@@ -29,8 +28,7 @@ class PdfFileCreator {
         String sourceHtmlUrl = fileRequest.getSourceHtmlUrl();
         requireNotNull(sourceHtmlUrl, "Source HTML url must be set");
         requireNotEmpty(sourceHtmlUrl, "Source HTML url cannot be empty");
-        
-        System.out.println("llego 2");
+ 
         List<String> pdfCommand = Arrays.asList(
                 "wkhtmltopdf",
                 sourceHtmlUrl,
@@ -40,16 +38,14 @@ class PdfFileCreator {
         ProcessBuilder pb = new ProcessBuilder(pdfCommand);
         Process pdfProcess;
  
-        System.out.println("llego 3");
         try {
             pdfProcess = pb.start();
-            System.out.println("llego 4");
+ 
             try(InputStream in = pdfProcess.getInputStream()) {
                 writeCreatedPdfFileToResponse(in, response);
                 waitForProcessBeforeContinueCurrentThread(pdfProcess);
                 requireSuccessfulExitStatus(pdfProcess);
                 setResponseHeaders(response, fileRequest);
-                System.out.println("llego 5");
             }
             catch (Exception ex) {
                 writeErrorMessageToLog(ex, pdfProcess);
@@ -60,7 +56,6 @@ class PdfFileCreator {
             }
         }
         catch (IOException ex) {
-        	ex.printStackTrace();
             throw new RuntimeException("PDF generation failed");
         }
     }
