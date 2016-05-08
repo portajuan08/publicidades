@@ -1,6 +1,7 @@
 package monkey.woodstock.domain;
 
 import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.List;
 
 import monkey.woodstock.Util.UtilTime;
@@ -150,47 +151,31 @@ public class FiltroBusqueda {
 		}
 	}
 	
-	public String getUrl(){
-		StringBuffer oString = new StringBuffer();
-		oString.append("_venceMes=on&");
-		if (seVence)
-			oString.append("venceMes=true&");
-		oString.append("_bonificadoMes=on&");
-		if (bonificadoMes)
-			oString.append("bonificadoMes=true&");
-		oString.append("mes=" + mes + "&");
-		oString.append("_telefono=on&");
-		if (telefono)
-			oString.append("telefono=true&");
-		oString.append("_direccion=on&");
-		if (direccion)
-			oString.append("direccion=true&");
-		oString.append("_vendedor=on&");
-		if (vendedor)
-			oString.append("vendedor=true&");
-		oString.append("_precio=on&");
-		if (precio)
-			oString.append("precio=true&");
-		oString.append("_inicio=on&");
-		if (inicio)
-			oString.append("inicio=true&");
-		oString.append("_fin=on&");
-		if (fin)
-			oString.append("fin=on&");
-		oString.append("_esBonificado=true&");
-		if (esBonificado)
-			oString.append("esBonificado=true&");
-		oString.append("_seVence=on&");
-		if (seVence)
-			oString.append("seVence=true&");
-		return oString.toString();
+	public int getCantidadColumnas(){
+		int iCant = 1; //por la columa nombre
+		if (telefono) iCant++;
+		if (direccion) iCant++;
+		if (vendedor) iCant++;
+		if (precio) iCant++;
+		if (inicio) iCant++;
+		if (fin) iCant++;
+		if (esBonificado) iCant++;
+		if (seVence) iCant++;
+		return iCant;
 	}
 	
-	public String getResultCampo(boolean bValor){
-		if (bValor)
-			return "true";
-		else
-			return "on";
+	public List<String> getColumnas(){
+		List<String> columnas = new ArrayList<String>();
+		columnas.add("NOMBRE");
+		if (telefono) columnas.add("TELEFONO");
+		if (direccion) columnas.add("DIRECCION");
+		if (vendedor) columnas.add("VENDEDOR");
+		if (precio) columnas.add("PRECIO");
+		if (inicio) columnas.add("INICIO");
+		if (fin) columnas.add("FIN");
+		if (esBonificado) columnas.add("ES BONIFICADO");
+		if (seVence) columnas.add("SE VENCE");
+		return columnas;
 	}
 	
 	public String toString(){

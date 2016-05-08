@@ -1,6 +1,5 @@
 package monkey.woodstock.controllers;
 
-import java.util.ArrayList;
 import java.util.Iterator;
 
 import javax.servlet.http.HttpServletRequest;
@@ -139,16 +138,6 @@ public class ContratoController {
             mesBonificadoService.saveMesBonificado(mesBonificado);
         }
         contratoService.saveContrato(contrato);
-        for(int i = 24; i < 75;i++){
-        	Contrato contratoAux = new Contrato();
-        	contratoAux.setFechaFin(contrato.getFechaFin());
-        	contratoAux.setFechaInicio(contrato.getFechaInicio());
-        	contratoAux.setPrecio(contrato.getPrecio());
-        	contratoAux.setVendedor(contrato.getVendedor());
-        	contratoAux.setMesesBonificados(new ArrayList<MesBonificado>());
-        	contratoAux.setCliente(clienteService.getClienteById(i + 4));	
-        	contratoService.saveContrato(contratoAux);
-        }
         return "redirect:/contrato/" + contrato.getId();
     }
 }

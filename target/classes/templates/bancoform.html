@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head lang="en">
+
+    <title>Spring Framework Guru</title>
+
+    <!--/*/ <th:block th:include="fragments/headerinc :: head"></th:block> /*/-->
+</head>
+<body>
+<div class="container">
+	<!--/*/ <th:block th:include="fragments/barraInicio :: header"></th:block> /*/-->
+    <!--/*/ <th:block th:include="fragments/barraDefectoCheques :: header"></th:block> /*/-->
+
+    <h2 th:text="#{fieldDatosBancos}"></h2>
+    <div>
+        <form class="form-horizontal" th:object="${banco}" th:action="@{/banco/new}" method="post">
+            <input type="hidden" th:field="*{id}"/>
+            <div class="form-group">
+                <label class="col-sm-2 control-label" th:text="#{fieldDescripcion}"/>
+                <div class="col-sm-10">
+                    <input type="text" class="form-control" th:field="*{descripcion}"/>
+					<div th:if="${#fields.hasErrors('descripcion')}" class="alert alert-danger" role="alert" th:errors="*{descripcion}">...</div>
+                </div>
+            </div>
+            <div class="row">
+                <button type="submit" class="btn btn-success" th:text="#{buttonGuardarBanco}"></button>
+                
+                <button type="submit" class="btn btn-success" name="cancel" th:text="#{buttonCancelar}"></button>
+            </div>
+
+        </form>
+    </div>
+</div>
+
+</body>
+</html>

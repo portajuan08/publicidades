@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head lang="en">
+
+    <title>Spring Framework Guru</title>
+
+    <!--/*/ <th:block th:include="fragments/headerinc :: head"></th:block> /*/-->
+</head>
+<body>
+<div class="container">
+	<!--/*/ <th:block th:include="fragments/barraInicio :: header"></th:block> /*/-->
+    <!--/*/ <th:block th:include="fragments/barraDefectoCheques :: header"></th:block> /*/-->
+    <h2 th:text="#{fieldCheques}"></h2>
+			
+    <div th:if="${not #lists.isEmpty(cheques)}">
+        <table class="table table-striped">
+            <tr>
+                <th th:text="#{fieldId}"/>
+            	<th th:text="#{fieldEmisor}"/>
+            	<th th:text="#{fieldBanco}"/>
+            	<th th:text="#{fieldNCheque}"/>
+            	<th th:text="#{fieldImporte}"/>
+            	<th th:text="#{fieldFechaEmision}"/>
+            	<th th:text="#{fieldFechaCobro}"/>
+            	<th th:text="#{fieldCliente}"/>
+            	<th th:text="#{fieldEstado}"/>
+				<th th:text="#{fieldVer}"/>
+                <th th:text="#{fieldEditar}"/>
+                <th th:text="#{fieldEliminar}"/>
+            </tr>
+            <tr th:each="cheque : ${cheques}">
+                <td th:text="${cheque.id}"><a href="/cheque/${cheque.id}">Id</a></td>
+                <td th:text="${cheque.emisor}"></td>
+                <td th:text="${cheque.banco.descripcion}"></td>
+                <td th:text="${cheque.nCheque}"></td>
+                <td th:text="${cheque.importe}"></td>
+                <td th:text="${cheque.fechaEmision}"></td>
+                <td th:text="${cheque.fechaCobro}"></td>
+                <td th:text="${cheque.cliente}"></td>
+                <td th:text="${cheque.estado}"></td>
+                <td><a th:href="${ '/cheque/' + cheque.id}" th:text="#{fieldVer}" class="glyphicon glyphicon-eye-open icon-white  "> </a></td>
+                <td><a th:href="${'/cheque/edit/' + cheque.id}" th:text="#{fieldEditar}" class="glyphicon glyphicon-edit icon-white  "></a></td>
+                <td><a th:href="${'/cheque/delete/' + cheque.id}" th:text="#{fieldEliminar}" class="glyphicon glyphicon-trash icon-white  "></a></td>
+            </tr>
+        </table>
+
+    </div>
+	<div th:if="${#lists.isEmpty(cheques)}">
+    	<label class="control-label" th:text="#{fieldNoCheques}"/>
+    </div>
+    <div> 
+		<form class="form-horizontal" th:object="${cheque}" th:action="@{/cheque/new}">
+		
+		<table>
+		    <tr>
+			    <td>
+			    	<button type="submit" class="btn btn-success" th:text="#{buttonAgregarCheque}"></button>
+			    </td>
+		    </tr>
+		</table>  
+		</form>
+	</div>
+</div>
+
+</body>
+</html>

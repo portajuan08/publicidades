@@ -1,5 +1,8 @@
 package monkey.woodstock.configuration;
 
+import javax.sql.DataSource;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -37,45 +40,17 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity httpSecurity) throws Exception {
-    		/*
-        httpSecurity.authorizeRequests().anyRequest().authenticated();
 
-        httpSecurity.formLogin().failureUrl("/login?error")
-                .defaultSuccessUrl("/")
-                .loginPage("/login")
-                .permitAll()
-                .and()
-                .logout().logoutRequestMatcher(new AntPathRequestMatcher("/logout")).logoutSuccessUrl("/login")
-                .permitAll();
-
-
-		
-		httpSecurity.headers().frameOptions().disable();
-    	
-		httpSecurity
-        .authorizeRequests()
-            .antMatchers("/resources/**").permitAll() 
-            .anyRequest().authenticated();
-		
-		httpSecurity.formLogin().failureUrl("/login?error")
-        .defaultSuccessUrl("/")
-        .loginPage("/login")
-        .successHandler(successHandler())
-        .permitAll()
-        .and()
-        .logout().logoutRequestMatcher(new AntPathRequestMatcher("/logout")).logoutSuccessUrl("/login")
-        .permitAll();
-        
-        */
     	httpSecurity.csrf().disable();
     	httpSecurity.headers().frameOptions().disable();
     	httpSecurity
          .authorizeRequests()
-             .antMatchers("/webjars/**","/images/**").permitAll()
+             .antMatchers("/webjars/**","/images/**", "?lang=en", "?lang=es").permitAll()
              .anyRequest().authenticated();
     	httpSecurity
     	.formLogin().failureUrl("/login?error")
         .loginPage("/login").defaultSuccessUrl("/")
+        .usernameParameter("username").passwordParameter("password")
         .successHandler(successHandler())
         .permitAll()
         .and()
@@ -84,13 +59,26 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
              .logoutSuccessUrl("/");
 
     }
+    
+    @Autowired
+    DataSource dataSource;
+    
+    @Autowired
+    public void configAuthentication(AuthenticationManagerBuilder auth) throws Exception {
+      auth.jdbcAuthentication().dataSource(dataSource)
+     .usersByUsernameQuery(
+      "select username,password, enabled from user where username=?")
+     .authoritiesByUsernameQuery(
+      "select username, rol from user_rol  where username=?");
+    } 
 
+/*    
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
         auth.inMemoryAuthentication().withUser("user").password("password").roles("USER");
         auth.inMemoryAuthentication().withUser("admin").password("password").roles("USER","ADMIN");
     }
-    
+  */  
     @Bean
     public AuthenticationSuccessHandler successHandler() {
     	return new MyCustomLoginSuccessHandler("/");

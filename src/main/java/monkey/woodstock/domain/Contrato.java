@@ -99,6 +99,29 @@ public class Contrato {
 	public Cliente getCliente(){
 		return cliente;
 	}
+	
+	public String getSeVence(String sMes){
+		if (fechaFin.equals(sMes))
+			return "SI";
+		else
+			return "NO";
+	}
+	
+	public String getEsBonificado(String sMes){
+		boolean bEsBonificado = false;
+		int i = 0;
+		while(i< mesesBonificados.size() && !bEsBonificado){
+			MesBonificado oMes = mesesBonificados.get(i);
+			if (sMes.equals(oMes.getMes()))
+				bEsBonificado = true;
+			i++;
+		}
+			
+		if (bEsBonificado)
+			return "SI";
+		else
+			return "NO";
+	}
     
 	public String toString(){
 		return "Mes inicio => " + fechaInicio + " Mes fin => " + fechaFin;

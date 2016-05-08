@@ -1,23 +1,27 @@
 package monkey.woodstock.controllers;
 
-import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 
+import javax.servlet.ServletContext;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import monkey.woodstock.PDF.PdfFileRequest;
+import monkey.woodstock.PDFDownload.CreatePDF;
+import monkey.woodstock.Util.UtilTime;
 import monkey.woodstock.domain.FiltroBusqueda;
 import monkey.woodstock.services.ContratoService;
 
-import org.apache.tomcat.util.http.fileupload.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.client.RestTemplate;
 
 @Controller
 public class ImprimirMesController {
@@ -35,54 +39,60 @@ public class ImprimirMesController {
         model.addAttribute("contratos", contratoService.listAllContratos(filtroBusqueda));
         return "imprimirMes";
     }
-    
-    @RequestMapping(value = "/imprimir")
-    public String listv4(Model model, FiltroBusqueda filtroBusqueda) {
-    	model.addAttribute("filtroBusqueda",filtroBusqueda);
-        model.addAttribute("contratos", contratoService.listAllContratos(filtroBusqueda));
-        System.out.println("contrato cant " + contratoService.listAllContratos(filtroBusqueda).size());
-        return "imprimirPdf";
-    }
-    
-    private final RestTemplate restTemplate;
-    
-    @Autowired
-    ImprimirMesController(RestTemplate restTemplate) {
-        this.restTemplate = restTemplate;
-    }
  
     @RequestMapping(value = "/imprimirMes", params = {"imprimir"})
-    void createPdfFromGoogle(HttpServletResponse response, FiltroBusqueda filtroBusqueda) {
-        PdfFileRequest fileRequest = new PdfFileRequest();
-        fileRequest.setFileName("google.pdf");
-        
-        System.out.println("filtro => " + filtroBusqueda);
-        System.out.println("url => " + filtroBusqueda.getUrl());
-        
-        fileRequest.setSourceHtmlUrl("http://localhost:8080/imprimir?" + filtroBusqueda.getUrl());
-        
-        
+	public void downloadPDF(HttpServletRequest request, HttpServletResponse response, FiltroBusqueda filtroBusqueda) throws IOException {
  
-        byte[] pdfFile = restTemplate.postForObject("http://localhost:8080/api/pdf", 
-                fileRequest, 
-                byte[].class
-        );
-        writePdfFileToResponse(pdfFile, "google.pdf", response);
-    }
+		final ServletContext servletContext = request.getSession().getServletContext();
+	    final File tempDirectory = (File) servletContext.getAttribute("javax.servlet.context.tempdir");
+	    final String temperotyFilePath = tempDirectory.getAbsolutePath();
+	    
+	    String fileName = "report" + UtilTime.fechaActual() + ".pdf";
+	    response.setContentType("application/pdf");
+	    response.setHeader("Content-disposition", "attachment; filename="+ fileName);
  
-    private void writePdfFileToResponse(byte[] pdfFile, 
-                                        String fileName, 
-                                        HttpServletResponse response) {
-        try (InputStream in = new ByteArrayInputStream(pdfFile)) {
-            OutputStream out = response.getOutputStream();
-            IOUtils.copy(in, out);
-            out.flush();
+	    try {
  
-            response.setContentType("application/pdf");
-            response.setHeader("Content-Disposition", "attachment; filename=\"" + fileName + "\"");
-        }
-        catch (IOException ex) {
-            throw new RuntimeException("Error occurred when creating PDF file", ex);
-        }
-    }
+	        CreatePDF.createPDF(temperotyFilePath+"\\"+fileName, filtroBusqueda, contratoService.listAllContratos(filtroBusqueda));
+	        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+	        baos = convertPDFToByteArrayOutputStream(temperotyFilePath+"\\"+fileName);
+	        OutputStream os = response.getOutputStream();
+	        baos.writeTo(os);
+	        os.flush();
+	    } catch (Exception e1) {
+	        e1.printStackTrace();
+	    }
+ 
+	}
+	
+	private ByteArrayOutputStream convertPDFToByteArrayOutputStream(String fileName) {
+ 
+		InputStream inputStream = null;
+		ByteArrayOutputStream baos = new ByteArrayOutputStream();
+		try {
+ 
+			inputStream = new FileInputStream(fileName);
+			byte[] buffer = new byte[1024];
+			baos = new ByteArrayOutputStream();
+ 
+			int bytesRead;
+			while ((bytesRead = inputStream.read(buffer)) != -1) {
+				baos.write(buffer, 0, bytesRead);
+			}
+ 
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		} finally {
+			if (inputStream != null) {
+				try {
+					inputStream.close();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			}
+		}
+		return baos;
+	}
 }

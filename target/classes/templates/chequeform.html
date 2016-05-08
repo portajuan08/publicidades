@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head lang="en">
+
+    <title>Spring Framework Guru</title>
+    
+
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <link href="http://cdn.jsdelivr.net/webjars/bootstrap/3.3.4/css/bootstrap.min.css"
+          th:href="@{/webjars/bootstrap/3.3.4/css/bootstrap.min.css}"
+          rel="stylesheet" media="screen"/>
+
+    <script src="http://cdn.jsdelivr.net/webjars/jquery/2.1.4/jquery.min.js"
+            th:src="@{/webjars/jquery/2.1.4/jquery.min.js}"></script>
+          
+    <link th:href="@{/css/bootstrap-select.min.css}" rel="stylesheet" media="screen"/>
+    
+    <script th:src="@{/js/bootstrap-select.min.js}"></script>
+          
+	<!--/*/ <th:block th:include="fragments/headerinc :: head"></th:block> /*/-->
+</head>
+<body>
+<div class="container">
+	<!--/*/ <th:block th:include="fragments/barraInicio :: header"></th:block> /*/-->
+    <!--/*/ <th:block th:include="fragments/barraDefectoCheques :: header"></th:block> /*/-->
+
+    <h2 th:text="#{fieldDatosCheque}"></h2>
+    <div>
+        <form class="form-horizontal" th:object="${cheque}" th:action="@{/cheque/new}" method="post">
+            <input type="hidden" th:field="*{id}"/>
+            <div class="form-group">
+                <label class="col-sm-2 control-label" th:text="#{fieldEmisor}"/>
+                <div class="col-sm-10">
+                    <input type="text" class="form-control" th:field="*{emisor}"/>
+                    <div th:if="${#fields.hasErrors('emisor')}" th:errors="*{emisor}" class="alert alert-danger" role="alert">Emisor Error</div>
+                </div>
+            </div>
+            <div class="form-group">
+            	<label class="col-sm-2 control-label" th:text="#{fieldBanco}"/>
+            	<div class="col-sm-10">
+					<select class="selectpicker" data-live-search="true" th:field="*{banco}">
+		          		<option class="btn btn-default dropdown-toggle" th:each="banco : ${bancos}" 
+		                	  th:value="${banco.id}" 
+		                  	  th:text="${banco.descripcion}">Thymus Thymi</option>
+		        	</select>
+		        	<div th:if="${#fields.hasErrors('banco')}" th:errors="*{banco}" class="alert alert-danger" role="alert">Banco Error</div>
+	        	</div>
+        	</div>
+			<div class="form-group">
+                <label class="col-sm-2 control-label" th:text="#{fieldNCheque}"/>
+                <div class="col-sm-10">
+                    <input type="text" class="form-control" th:field="*{nCheque}"/>
+                    <div th:if="${#fields.hasErrors('nCheque')}" th:errors="*{nCheque}" class="alert alert-danger" role="alert">Numero Cheque Error</div>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-2 control-label" th:text="#{fieldImporte}"/>
+                <div class="col-sm-10">
+                    <input type="number" step="0.01" class="form-control" th:field="*{importe}"/>
+                    <div th:if="${#fields.hasErrors('importe')}" th:errors="*{importe}" class="alert alert-danger" role="alert">Importe Error</div>
+                </div>
+            </div>
+            
+            <div class="form-group">
+                <label class="col-sm-2 control-label" th:text="#{fieldFechaEmision}"/>
+                <div class="col-sm-10">
+                    <input type="date" class="form-control" th:field="*{fechaEmision}"/>
+                    <div th:if="${#fields.hasErrors('fechaEmision')}" th:errors="*{fechaEmision}" class="alert alert-danger" role="alert">FechaEmision Error</div>
+                </div>
+            </div>
+			<div class="form-group">
+                <label class="col-sm-2 control-label" th:text="#{fieldFechaCobro}"/>
+                <div class="col-sm-10">
+                    <input type="date" class="form-control" th:field="*{fechaCobro}"/>
+                    <div th:if="${#fields.hasErrors('fechaCobro')}" th:errors="*{fechaCobro}" class="alert alert-danger" role="alert">FechaCobro Error</div>
+                </div>
+            </div>
+			<div class="form-group">
+                <label class="col-sm-2 control-label" th:text="#{fieldCliente}"/>
+                <div class="col-sm-10">
+                    <input type="text" class="form-control" th:field="*{cliente}"/>
+                    <div th:if="${#fields.hasErrors('cliente')}" th:errors="*{cliente}" class="alert alert-danger" role="alert">Cliente Error</div>
+                </div>
+            </div>
+			<div class="form-group">
+                <label class="col-sm-2 control-label" th:text="#{fieldEstado}"/>
+                <div class="col-sm-10">
+                    <input type="text" class="form-control" th:field="*{estado}"/>
+                    <div th:if="${#fields.hasErrors('estado')}" th:errors="*{estado}" class="alert alert-danger" role="alert">Estado Error</div>
+                </div>
+            </div>
+            
+            <div class="row">
+                <button type="submit" class="btn btn-success" th:text="#{buttonGuardarCheque}"></button>
+                
+                <button type="submit" class="btn btn-success" name="cancel" th:text="#{buttonCancelar}"></button>
+            </div>
+
+        </form>
+    </div>
+</div>
+
+</body>
+</html>

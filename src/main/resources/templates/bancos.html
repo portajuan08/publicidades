@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head lang="en">
+
+    <title>Spring Framework Guru</title>
+
+    <!--/*/ <th:block th:include="fragments/headerinc :: head"></th:block> /*/-->
+</head>
+<body>
+<div class="container">
+	<!--/*/ <th:block th:include="fragments/barraInicio :: header"></th:block> /*/-->
+    <!--/*/ <th:block th:include="fragments/barraDefectoCheques :: header"></th:block> /*/-->
+    <h2 th:text="#{fieldBancos}"></h2>
+			
+    <div th:if="${not #lists.isEmpty(bancos)}">
+        <table class="table table-striped">
+            <tr>
+                <th th:text="#{fieldId}"/>
+            	<th th:text="#{fieldDescripcion}"/>
+				<th th:text="#{fieldVer}"/>
+                <th th:text="#{fieldEditar}"/>
+                <th th:text="#{fieldEliminar}"/>
+            </tr>
+            <tr th:each="banco : ${bancos}">
+                <td th:text="${banco.id}"><a href="/banco/${banco.id}">Id</a></td>
+                <td th:text="${banco.descripcion}">Nombre</td>
+                <td><a th:href="${ '/banco/' + banco.id}" th:text="#{fieldVer}" class="glyphicon glyphicon-eye-open icon-white  "> </a></td>
+                <td><a th:href="${'/banco/edit/' + banco.id}" th:text="#{fieldEditar}" class="glyphicon glyphicon-edit icon-white  "></a></td>
+                <td><a th:href="${'/banco/delete/' + banco.id}" th:text="#{fieldEliminar}" class="glyphicon glyphicon-trash icon-white  "></a></td>
+            </tr>
+        </table>
+
+    </div>
+	<div th:if="${#lists.isEmpty(bancos)}">
+    	<label class="control-label" th:text="#{fieldNoBancos}"/>
+    </div>
+    <div> 
+		<form class="form-horizontal" th:object="${banco}" th:action="@{/banco/new}">
+		
+		<table>
+		    <tr>
+			    <td>
+			    	<button type="submit" class="btn btn-success" th:text="#{buttonAgregarBanco}"></button>
+			    </td>
+		    </tr>
+		</table>  
+		</form>
+	</div>
+</div>
+
+</body>
+</html>

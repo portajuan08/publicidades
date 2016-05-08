@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head lang="en">
+
+    <title>Spring Framework Guru</title>
+
+    <!--/*/ <th:block th:include="fragments/headerinc :: head"></th:block> /*/-->
+</head>
+<body>
+<div class="container">
+	<!--/*/ <th:block th:include="fragments/barraInicio :: header"></th:block> /*/-->
+    <!--/*/ <th:block th:include="fragments/barraDefectoCheques :: header"></th:block> /*/-->
+
+    <h2 th:text="#{fieldDatosCheque}"></h2>
+        <div>
+            <form class="form-horizontal" th:object="${cheque}">
+                <div class="form-group">
+                	<label class="col-sm-2 control-label" th:text="#{fieldEmisor}"/>
+                    <div class="col-sm-10">
+                        <p class="form-control-static" th:text="*{emisor}"></p></div>
+                </div>
+                <div class="form-group">
+                	<label class="col-sm-2 control-label" th:text="#{fieldBanco}"/>
+                    <div class="col-sm-10">
+                        <p class="form-control-static" th:text="*{banco.descripcion}"></p>
+                    </div>
+                </div>
+                <div class="form-group">
+                	<label class="col-sm-2 control-label" th:text="#{fieldNCheque}"/>
+                    <div class="col-sm-10">
+                        <p class="form-control-static" th:text="*{nCheque}"></p>
+                    </div>
+                </div>
+                
+				<div class="form-group">
+                	<label class="col-sm-2 control-label" th:text="#{fieldImporte}"/>
+                    <div class="col-sm-10">
+                        <p class="form-control-static" th:text="*{importe}"></p></div>
+                </div>
+                <div class="form-group">
+                	<label class="col-sm-2 control-label" th:text="#{fieldFechaEmision}"/>
+                    <div class="col-sm-10">
+                        <p class="form-control-static" th:text="*{fechaEmision}"></p>
+                    </div>
+                </div>
+                <div class="form-group">
+                	<label class="col-sm-2 control-label" th:text="#{fieldFechaCobro}"/>
+                    <div class="col-sm-10">
+                        <p class="form-control-static" th:text="*{fechaCobro}"></p>
+                    </div>
+                </div>
+                
+				<div class="form-group">
+                	<label class="col-sm-2 control-label" th:text="#{fieldCliente}"/>
+                    <div class="col-sm-10">
+                        <p class="form-control-static" th:text="*{cliente}"></p>
+                    </div>
+                </div>
+                <div class="form-group">
+                	<label class="col-sm-2 control-label" th:text="#{fieldEstado}"/>
+                    <div class="col-sm-10">
+                        <p class="form-control-static" th:text="*{estado}"></p>
+                    </div>
+                </div>
+                <div>
+                	<button type="submit" class="btn btn-success" name="volver" th:text="#{buttonVolver}"></button>
+                </div>
+            </form>
+    </div>
+</div>
+
+</body>
+</html>

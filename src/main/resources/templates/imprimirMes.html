@@ -16,9 +16,9 @@
 </head>
 <body>
 <div class="container">
+	<!--/*/ <th:block th:include="fragments/barraInicio :: header"></th:block> /*/-->
     <form class="form-inline" th:object="${filtroBusqueda}" th:action="@{/imprimirMes}">
-    
-        <!--/*/ <th:block th:include="fragments/barraImprimir :: header"></th:block> /*/-->
+        <!--/*/ <th:block th:include="fragments/barraImprimirPublicidades :: header"></th:block> /*/-->
 		<div class="form-group">
 		<!-- Nav tabs -->
 			<ul class="nav nav-tabs" role="tablist">
