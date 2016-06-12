@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head lang="en">
+
+    <title>Spring Framework Guru</title>
+
+    <!--/*/ <th:block th:include="fragments/headerinc :: head"></th:block> /*/-->
+</head>
+<body>
+<div class="container">
+	<!--/*/ <th:block th:include="fragments/barraInicio :: header"></th:block> /*/-->
+
+    <h2 th:text="#{fieldCambiarMail}"></h2>
+    <div>
+        <form class="form-horizontal" th:object="${user}" th:action="@{/user/cambiarMail}" method="post">
+            <input type="hidden" th:field="*{username}"/>
+            <div class="input-group">
+                    <input type="text" class="form-control" th:field="*{mail}" placeholder="Mail" aria-describedby="basic-addon2"/>
+                    <span class="input-group-addon" id="basic-addon2">@ejemplo.com</span>
+					<div th:if="${#fields.hasErrors('mail')}" class="alert alert-danger" role="alert" th:errors="*{mail}">...</div>
+            </div>
+            <div >
+                <button type="submit" class="btn btn-success" th:text="#{fieldCambiarMail}"></button>
+                
+                <button type="submit" class="btn btn-success" name="cancel" th:text="#{buttonCancelar}"></button>
+            </div>
+
+        </form>
+    </div>
+</div>
+
+</body>
+</html>

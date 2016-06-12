@@ -1,7 +1,7 @@
 package monkey.woodstock.domain;
 
+import java.util.ArrayList;
 import java.util.List;
-import java.security.Principal;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -10,13 +10,15 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 
 @Entity
-public class User implements Principal{
+public class User {
     @Id  
     private String username;
     
     private String password;
     
     private Boolean enabled;
+    
+    private String mail;
     
     @ManyToMany
     @JoinTable (
@@ -46,6 +48,8 @@ public class User implements Principal{
 	}
 
 	public List<Rol> getRol() {
+		if (this.rol == null)
+			rol = new ArrayList<Rol>();
 		return rol;
 	}
 
@@ -57,9 +61,16 @@ public class User implements Principal{
 		this.enabled = enabled;
 	}
 
-	@Override
 	public String getName() {
 		return username;
+	}
+	
+	public void setMail(String mail){
+		this.mail = mail;
+	}
+	
+	public String getMail(){
+		return mail;
 	}
 
 }

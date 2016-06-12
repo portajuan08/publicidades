@@ -13,8 +13,10 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import monkey.woodstock.PDFDownload.CreatePDF;
+import monkey.woodstock.Util.UtilModel;
 import monkey.woodstock.Util.UtilTime;
 import monkey.woodstock.domain.FiltroBusqueda;
+import monkey.woodstock.services.ChequeService;
 import monkey.woodstock.services.ContratoService;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,16 +29,23 @@ import org.springframework.web.bind.annotation.RequestMethod;
 public class ImprimirMesController {
 
     private ContratoService contratoService;
-
+    private ChequeService chequeService;
+    
     @Autowired
     public void setContratoService(ContratoService contratoService) {
         this.contratoService = contratoService;
+    }
+    
+    @Autowired
+    public void setChequeService(ChequeService chequeService) {
+        this.chequeService = chequeService;
     }
 
     @RequestMapping(value = "/imprimirMes", method = RequestMethod.GET)
     public String list(Model model, FiltroBusqueda filtroBusqueda) {
     	model.addAttribute("filtroBusqueda",filtroBusqueda);
         model.addAttribute("contratos", contratoService.listAllContratos(filtroBusqueda));
+        model.addAllAttributes(UtilModel.getModalsGenerales(chequeService));
         return "imprimirMes";
     }
  

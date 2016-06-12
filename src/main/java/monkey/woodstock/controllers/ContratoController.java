@@ -5,9 +5,11 @@ import java.util.Iterator;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
+import monkey.woodstock.Util.UtilModel;
 import monkey.woodstock.Util.UtilTime;
 import monkey.woodstock.domain.Contrato;
 import monkey.woodstock.domain.MesBonificado;
+import monkey.woodstock.services.ChequeService;
 import monkey.woodstock.services.ClienteService;
 import monkey.woodstock.services.ContratoService;
 import monkey.woodstock.services.MesBonificadoService;
@@ -29,6 +31,7 @@ public class ContratoController {
     private ContratoService contratoService;
     private MesBonificadoService mesBonificadoService;
     private ClienteService clienteService;
+    private ChequeService chequeService;
     
     @Autowired
     private ContratoValidator contratoValidator;
@@ -53,9 +56,14 @@ public class ContratoController {
         this.mesBonificadoService = mesBonificadoService;
     }
 
+    @Autowired
+    public void setChequeService(ChequeService chequeService) {
+        this.chequeService = chequeService;
+    }
     @RequestMapping(value = "/contratos", method = RequestMethod.GET)
     public String list(Model model) {
         model.addAttribute("contratos", contratoService.listAllContratos());
+        model.addAllAttributes(UtilModel.getModalsGenerales(chequeService));
         return "contratos";
     }
 
@@ -63,6 +71,7 @@ public class ContratoController {
     public String showContrato(@PathVariable Integer id, Model model) {
         Contrato contrato = contratoService.getContratoById(id);
         model.addAttribute("contrato", contrato);
+        model.addAllAttributes(UtilModel.getModalsGenerales(chequeService));
         return "contratoshow";
     }
     
@@ -75,6 +84,7 @@ public class ContratoController {
     public String edit(@PathVariable Integer id, Model model) {
         model.addAttribute("contrato", contratoService.getContratoById(id));
         model.addAttribute("clientes", clienteService.listAllClientes());
+        model.addAllAttributes(UtilModel.getModalsGenerales(chequeService));
         return "contratoform";
     }
     
@@ -91,6 +101,7 @@ public class ContratoController {
         contrato.setFechaFin(UtilTime.getMesAnioSiguiente());
         model.addAttribute(contrato);
         model.addAttribute("clientes", clienteService.listAllClientes());
+        model.addAllAttributes(UtilModel.getModalsGenerales(chequeService));
         return "contratoform";
     }
     
@@ -101,6 +112,7 @@ public class ContratoController {
         mesBonificadoService.saveMesBonificado(mesBonificado);
         contrato.getMesesBonificados().add(mesBonificado);
         model.addAttribute("clientes", clienteService.listAllClientes());
+        model.addAllAttributes(UtilModel.getModalsGenerales(chequeService));
         return "contratoform";
     }
     
@@ -120,6 +132,7 @@ public class ContratoController {
             }
         }
         model.addAttribute("clientes", clienteService.listAllClientes());
+        model.addAllAttributes(UtilModel.getModalsGenerales(chequeService));
         return "contratoform";
     }
 
@@ -132,6 +145,7 @@ public class ContratoController {
     public String saveContrato(@Valid Contrato contrato, BindingResult bindingResult, Model model)  {
         if (bindingResult.hasErrors()) {
         	model.addAttribute("clientes", clienteService.listAllClientes());
+        	model.addAllAttributes(UtilModel.getModalsGenerales(chequeService));
             return "contratoform";
         }
         for (MesBonificado mesBonificado : contrato.getMesesBonificados()) {

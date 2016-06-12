@@ -16,6 +16,8 @@ public interface ChequeService {
     
     void deleteCheque(Cheque cheque);
     
+    List<Cheque> getChequesEnVencimiento();
+    
     
 }
 

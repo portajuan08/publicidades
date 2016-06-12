@@ -71,14 +71,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
      .authoritiesByUsernameQuery(
       "select username, rol from user_rol  where username=?");
     } 
-
-/*    
-    @Override
-    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        auth.inMemoryAuthentication().withUser("user").password("password").roles("USER");
-        auth.inMemoryAuthentication().withUser("admin").password("password").roles("USER","ADMIN");
-    }
-  */  
+ 
     @Bean
     public AuthenticationSuccessHandler successHandler() {
     	return new MyCustomLoginSuccessHandler("/");

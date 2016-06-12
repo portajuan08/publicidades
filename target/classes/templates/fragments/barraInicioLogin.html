@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head lang="en">
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <link href="http://cdn.jsdelivr.net/webjars/bootstrap/3.3.4/css/bootstrap.min.css"
+          th:href="@{/webjars/bootstrap/3.3.4/css/bootstrap.min.css}"
+          rel="stylesheet" media="screen"/>
+
+      <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.2/jquery.min.js"></script>
+  <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+
+  <style>
+  .modal-header, h4, .close {
+      background-color: #5cb85c;
+      color:white !important;
+      text-align: center;
+      font-size: 30px;
+  }
+  .modal-footer {
+      background-color: #f9f9f9;
+  }
+  </style> 
+    
+</head>
+<body>
+
+<div class="container">
+    <div th:fragment="header">
+        <nav class="navbar navbar-default">
+            <div class="container-fluid">
+                <div class="navbar-collapse collapse">
+                	<a class="navbar-brand" href="#" th:href="@{/}" th:text="#{fieldInicioPag}"></a>
+                    <ul class="nav navbar-nav navbar-right">
+                    	<li><a class="navbar-brand" href="?lang=en">English </a><img class="navbar-brand " th:src="@{/images/bandera_ing.png}" ></img></li>
+                    	<li><a class="navbar-brand" href="?lang=es">Español </a><img class="navbar-brand "  th:src="@{/images/bandera_arg.png}"  ></img></li>
+                    	<li><a class="navbar-brand" href="#" sec:authorize="hasRole('ROLE_ADMIN')"  id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true"><span class="badge" th:text="${vencidos}"></span><i class="glyphicon glyphicon-envelope" style="color:green;"></i></a>
+                    	 	<ul class="dropdown-menu" aria-labelledby="dropdownMenu1" th:if="${not #lists.isEmpty(chequesVencidos)}">
+												<li th:each="cheque : ${chequesVencidos}" >
+													<td><a th:href="${ '/cheque/' + cheque.idCheque}" th:text="${cheque.textoCheque}">Title ...</a></td>
+        										</li>
+							</ul>
+                    	</li>
+                    	<li><a class="navbar-brand" href="#" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true" sec:authorize="isAuthenticated()" ><i class="glyphicon glyphicon-cog" style="color:grey;"></i></a>
+						  <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
+						    <li><a href="#" data-toggle="modal" data-target="#myModal">Cambiar contraseña</a></li>
+						    <li><a href="#" th:href="@{/user/cambiarMail}"  th:text="#{fieldCambiarMail}"></a></li>
+						  </ul>
+                    	</li>
+                    	<li><a class="navbar-brand" href="#" th:href="@{/logout}" sec:authorize="isAuthenticated()" ><i class="glyphicon glyphicon-log-out" style="color:red;"></i></a></li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </div>
+</div>
+</body>
+</html>

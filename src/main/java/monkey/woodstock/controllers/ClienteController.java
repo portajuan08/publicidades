@@ -2,8 +2,10 @@ package monkey.woodstock.controllers;
 
 import javax.validation.Valid;
 
+import monkey.woodstock.Util.UtilModel;
 import monkey.woodstock.domain.Cliente;
 import monkey.woodstock.domain.Contrato;
+import monkey.woodstock.services.ChequeService;
 import monkey.woodstock.services.ClienteService;
 import monkey.woodstock.services.ContratoService;
 
@@ -20,7 +22,8 @@ public class ClienteController {
 
     private ClienteService clienteService;
     private ContratoService contratoService;
-
+    private ChequeService chequeService;
+    
     @Autowired
     public void setClienteService(ClienteService clienteService) {
         this.clienteService = clienteService;
@@ -31,9 +34,15 @@ public class ClienteController {
         this.contratoService = contratoService;
     }
     
+    @Autowired
+    public void setChequeService(ChequeService chequeService) {
+        this.chequeService = chequeService;
+    }
+    
     @RequestMapping(value = "/clientes", method = RequestMethod.GET)
     public String list(Model model) {
         model.addAttribute("clientes", clienteService.listAllClientes());
+        model.addAllAttributes(UtilModel.getModalsGenerales(chequeService));
         return "clientes";
     }
 
@@ -41,6 +50,7 @@ public class ClienteController {
     public String showCliente(@PathVariable Integer id, Model model) {
         Cliente cliente = clienteService.getClienteById(id);
         model.addAttribute("cliente", cliente);
+        model.addAllAttributes(UtilModel.getModalsGenerales(chequeService));
         return "clienteshow";
     }
     
@@ -52,6 +62,7 @@ public class ClienteController {
     @RequestMapping(value = "cliente/edit/{id}")
     public String edit(@PathVariable Integer id, Model model) {
         model.addAttribute("cliente", clienteService.getClienteById(id));
+        model.addAllAttributes(UtilModel.getModalsGenerales(chequeService));
         return "clienteform";
     }
     
@@ -68,6 +79,7 @@ public class ClienteController {
     public String add(Model model) {
         Cliente cliente = new Cliente();
         model.addAttribute(cliente);
+        model.addAllAttributes(UtilModel.getModalsGenerales(chequeService));
         return "clienteform";
     }
 
@@ -77,8 +89,9 @@ public class ClienteController {
     }
     
     @RequestMapping(value = "cliente/new", method = RequestMethod.POST)
-    public String saveCliente(@Valid Cliente cliente, BindingResult bindingResult) {
+    public String saveCliente(@Valid Cliente cliente, BindingResult bindingResult, Model model) {
         if (bindingResult.hasErrors()) {
+        	model.addAllAttributes(UtilModel.getModalsGenerales(chequeService));
             return "clienteform";
         }
         clienteService.saveCliente(cliente);

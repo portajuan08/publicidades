@@ -6,11 +6,21 @@
           th:href="@{/webjars/bootstrap/3.3.4/css/bootstrap.min.css}"
           rel="stylesheet" media="screen"/>
 
-    <script src="http://cdn.jsdelivr.net/webjars/jquery/2.1.4/jquery.min.js"
-            th:src="@{/webjars/jquery/2.1.4/jquery.min.js}"></script>
+      <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.2/jquery.min.js"></script>
+  <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
 
-	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" 
-    integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
+  <style>
+  .modal-header, h4, .close {
+      background-color: #5cb85c;
+      color:white !important;
+      text-align: center;
+      font-size: 30px;
+  }
+  .modal-footer {
+      background-color: #f9f9f9;
+  }
+  </style> 
+    
 </head>
 <body>
 
@@ -23,9 +33,54 @@
                     <ul class="nav navbar-nav navbar-right">
                     	<li><a class="navbar-brand" href="?lang=en">English </a><img class="navbar-brand " th:src="@{/images/bandera_ing.png}" ></img></li>
                     	<li><a class="navbar-brand" href="?lang=es">Español </a><img class="navbar-brand "  th:src="@{/images/bandera_arg.png}"  ></img></li>
-                    	<li><a class="navbar-brand" href="#" th:href="@{/logout}" sec:authorize="hasRole('ROLE_ADMIN')" ><span class="badge">42</span><i class="glyphicon glyphicon-envelope" style="color:blue;"></i></a></li>
-                    	<li><a class="navbar-brand" href="#" th:href="@{/logout}" sec:authorize="isAuthenticated()" ><i class="glyphicon glyphicon-cog" style="color:grey;"></i></a></li>
-                    	<li><a class="navbar-brand" href="#" th:href="@{/logout}" sec:authorize="isAuthenticated()" ><i class="glyphicon glyphicon-log-out" style="color:green;"></i></a></li>
+                    	<li><a class="navbar-brand" href="#" sec:authorize="hasRole('ROLE_ADMIN')"  id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true"><span class="badge" th:text="${vencidos}"></span><i class="glyphicon glyphicon-envelope" style="color:green;"></i></a>
+                    	 	<ul class="dropdown-menu" aria-labelledby="dropdownMenu1" th:if="${not #lists.isEmpty(chequesVencidos)}">
+												<li th:each="cheque : ${chequesVencidos}" >
+													<td><a th:href="${ '/cheque/' + cheque.idCheque}" th:text="${cheque.textoCheque}">Title ...</a></td>
+        										</li>
+							</ul>
+                    	</li>
+                    	<li><a class="navbar-brand" href="#" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true" sec:authorize="isAuthenticated()" ><i class="glyphicon glyphicon-cog" style="color:grey;"></i></a>
+						  <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
+						    <li><a href="#" data-toggle="modal" data-target="#myModal">Cambiar contraseña</a></li>
+						    <li><a href="#" th:href="@{/user/cambiarMail}"  th:text="#{fieldCambiarMail}"></a></li>
+						  </ul>
+							  <!-- Modal -->
+							  <div class="modal fade" id="myModal" role="dialog">
+							    <div class="modal-dialog">
+							    
+							      <!-- Modal content-->
+							      <div class="modal-content">
+							        <div class="modal-header" style="padding:35px 50px;">
+							          <button type="button" class="close" data-dismiss="modal">&times;</button>
+							          <h4><span class="glyphicon glyphicon-lock"></span> Cambiar Contraseña</h4>
+							        </div>
+							        <div class="modal-body" style="padding:40px 50px;">
+							          <form role="form" th:object="${cambiarContra}" th:action="@{/cambiarPass}" method="post">>
+							            <div class="form-group">
+							              <label for="psw"><span class="glyphicon glyphicon-eye-open"></span> Contraseña Actual</label>
+							              <input type="text" th:field="*{antigua}" class="form-control" id="pswa" placeholder="Ingresar Contraseña Actual"/>
+							            </div>
+										<div class="form-group">
+							              <label for="psw"><span class="glyphicon glyphicon-eye-open"></span> Nueva Contraseña</label>
+							              <input type="text" th:field="*{nueva}" class="form-control" id="pswn" placeholder="Ingresar Contraseña Nueva"/>
+							            </div>
+										<div class="form-group">
+							              <label for="psw"><span class="glyphicon glyphicon-eye-open"></span> Confirmar Contraseña</label>
+							              <input type="text" th:field="*{confirmacion}" class="form-control" id="pswc" placeholder="Ingresar Contraseña Nueva"/>
+							            </div>
+							              <button type="submit" class="btn btn-success btn-block"><span class="glyphicon glyphicon-off"></span> Guardar Cambios</button>
+							          </form>
+							        </div>
+							        <div class="modal-footer">
+							          <button type="submit" class="btn btn-danger btn-default pull-left" data-dismiss="modal"><span class="glyphicon glyphicon-remove"></span> Cancel</button>
+							        </div>
+							      </div>
+							      
+							    </div>
+							  </div> 
+                    	</li>
+                    	<li><a class="navbar-brand" href="#" th:href="@{/logout}" sec:authorize="isAuthenticated()" ><i class="glyphicon glyphicon-log-out" style="color:red;"></i></a></li>
                     </ul>
                 </div>
             </div>

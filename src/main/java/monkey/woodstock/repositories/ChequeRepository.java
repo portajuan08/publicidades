@@ -22,4 +22,7 @@ public interface ChequeRepository extends CrudRepository<Cheque, Integer>{
 	
 	@Query("from cheque where banco_id=:bancoid")
 	public List<Cheque> findByBanco(@Param("bancoid") Integer bancoId);
+	
+	@Query("from cheque where estado is null and ya_aviso = false")
+	public List<Cheque> findByMostrarEnGadget();
 }

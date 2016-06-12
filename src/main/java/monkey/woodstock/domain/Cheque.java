@@ -10,6 +10,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.validation.constraints.NotNull;
 
 @Entity(name="cheque")
 public class Cheque {
@@ -17,24 +18,32 @@ public class Cheque {
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "CHEQUE_ID")
     private Integer id;
-
+    
+    @NotNull(message = "El emisor no puede ser vacio.")
     private String emisor;
     
     @ManyToOne
     @JoinColumn(name="BANCO_ID")
     private Banco banco;
     
+    @NotNull(message = "El Numero de cheque no puede ser vacio.")
     private Long nCheque;
     
+    @NotNull(message = "El importe no puede ser vacio.")
     private BigDecimal importe;
     
+    @NotNull(message = "La fecha de emision no puede ser vacia.")
     private Date fechaEmision;
     
+    @NotNull(message = "La fecha de cobro no puede ser vacia.")
     private Date fechaCobro;
     
+    @NotNull(message = "El cliente no puede ser vacio.")
     private String cliente;
     
     private String estado;
+    
+    private Boolean yaAviso;
 
 	public Integer getId() {
 		return id;
@@ -106,6 +115,18 @@ public class Cheque {
 
 	public void setEstado(String estado) {
 		this.estado = estado;
+	}
+	
+	public Boolean getYaAviso(){
+		return yaAviso;
+	}
+	
+	public void setYaAviso(Boolean yaAviso){
+		this.yaAviso = yaAviso;
+	}
+	
+	public String toString(){
+		return nCheque.toString();
 	}
 }
 

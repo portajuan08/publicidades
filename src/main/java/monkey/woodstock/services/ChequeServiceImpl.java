@@ -3,6 +3,7 @@ package monkey.woodstock.services;
 import java.util.ArrayList;
 import java.util.List;
 
+import monkey.woodstock.Util.UtilTime;
 import monkey.woodstock.domain.Cheque;
 import monkey.woodstock.repositories.ChequeRepository;
 
@@ -42,6 +43,16 @@ public class ChequeServiceImpl implements ChequeService {
 	@Override
 	public void deleteCheque(Cheque cheque){
 		chequeRepository.delete(cheque);
+	}
+
+	@Override
+	public List<Cheque> getChequesEnVencimiento() {
+		List<Cheque> cheques = chequeRepository.findByMostrarEnGadget();
+		List<Cheque> chequesVencidos = new ArrayList<Cheque>();
+		for(Cheque cheque : cheques)
+			if (UtilTime.estaEnPeriodoVencimiento(cheque.getFechaCobro()))
+				chequesVencidos.add(cheque);
+		return chequesVencidos;
 	}
 }
 

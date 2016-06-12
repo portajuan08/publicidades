@@ -4,6 +4,7 @@ import java.util.List;
 
 import javax.validation.Valid;
 
+import monkey.woodstock.Util.UtilModel;
 import monkey.woodstock.domain.Banco;
 import monkey.woodstock.domain.Cheque;
 import monkey.woodstock.services.BancoService;
@@ -35,6 +36,7 @@ public class BancoController {
     
     @RequestMapping(value = "/bancos", method = RequestMethod.GET)
     public String list(Model model) {
+    	model.addAllAttributes(UtilModel.getModalsGenerales(chequeService));
         model.addAttribute("bancos", bancoService.listAllBancos());
         return "bancos";
     }
@@ -43,6 +45,7 @@ public class BancoController {
     public String showBanco(@PathVariable Integer id, Model model) {
         Banco banco = bancoService.getBancoById(id);
         model.addAttribute("banco", banco);
+        model.addAllAttributes(UtilModel.getModalsGenerales(chequeService));
         return "bancoshow";
     }
     
@@ -54,6 +57,7 @@ public class BancoController {
     @RequestMapping(value = "banco/edit/{id}")
     public String edit(@PathVariable Integer id, Model model) {
         model.addAttribute("banco", bancoService.getBancoById(id));
+        model.addAllAttributes(UtilModel.getModalsGenerales(chequeService));
         return "bancoform";
     }
     
@@ -71,6 +75,7 @@ public class BancoController {
     public String add(Model model) {
         Banco banco = new Banco();
         model.addAttribute(banco);
+        model.addAllAttributes(UtilModel.getModalsGenerales(chequeService));
         return "bancoform";
     }
 
@@ -80,8 +85,9 @@ public class BancoController {
     }
     
     @RequestMapping(value = "banco/new", method = RequestMethod.POST)
-    public String saveBanco(@Valid Banco banco, BindingResult bindingResult) {
+    public String saveBanco(@Valid Banco banco, BindingResult bindingResult, Model model) {
         if (bindingResult.hasErrors()) {
+        	model.addAllAttributes(UtilModel.getModalsGenerales(chequeService));
             return "bancoform";
         }
         bancoService.saveBanco(banco);

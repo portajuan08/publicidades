@@ -28,7 +28,6 @@ public class SpringBootWebApplication extends WebMvcConfigurerAdapter {
     public LocaleResolver localeResolver() {
         SessionLocaleResolver slr = new SessionLocaleResolver();
         slr.setDefaultLocale(new Locale("es_ES"));
-        //slr.setDefaultLocale(Locale.ENGLISH);
         return slr;
     }
 
